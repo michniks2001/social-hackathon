@@ -3,7 +3,7 @@ import os
 
 from discord.ext import commands
 from load_dotenv import load_dotenv
-from toxicity_analysis import predict_toxicity_and_sarcasm
+from toxicity_analysis2 import predict_toxicity_and_sarcasm
 
 load_dotenv()
 
@@ -37,7 +37,7 @@ async def on_message(message: discord.Message):
     if toxicity_levels['toxicity_level'] >= 8:
         if toxicity_levels['sarcasm_level'] < 3:
             await message.delete()
-            await message.channel.send('Watch your mouth!')
+            await message.channel.send(f'Watch your mouth {message.channel.mention(message.author)}!')
     else:
         pass
 

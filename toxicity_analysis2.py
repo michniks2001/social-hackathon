@@ -1,7 +1,11 @@
 from openai import OpenAI
 import os
+from load_dotenv import load_dotenv
 
-client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
+load_dotenv()
+
+client = OpenAI(api_key=os.environ.get("DEEPSEEK_API_KEY"),
+                base_url="https://api.deepseek.com")
 
 
 def predict_toxicity_and_sarcasm(text):
@@ -44,7 +48,3 @@ def predict_toxicity_and_sarcasm(text):
     except Exception as e:
         print(f"Error in predict_toxicity_and_sarcasm: {e}")
         return {"toxicity_level": 0, "sarcasm_level": 0}
-
-
-predict_toxicity_and_sarcasm('I hate you!')
-predict_toxicity_and_sarcasm('I hate you!/ s')
