@@ -2,22 +2,16 @@ from openai import OpenAI
 import os
 from load_dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
-api_key=""
-# Retrieve OpenAI API Key
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+client = OpenAI(api_key=os.environ.get("DEEPSEEK_API_KEY"),
+                base_url="https://api.deepseek.com")
 
 
 def predict_toxicity_and_sarcasm(text):
-    """
-    Uses OpenAI's API to predict the toxicity and sarcasm level of a given text.
-    Returns a dictionary containing both scores.
-    """
     try:
         response = client.chat.completions.create(
-            model="gpt-4-turbo",
+            model="deepseek-chat",
             messages=[{
                 "role": "system",
                 "content": '''
@@ -35,17 +29,9 @@ def predict_toxicity_and_sarcasm(text):
                     - Provide a **sarcasm score (0-10)**, where:  
                         - 0 = Completely literal  
                         - 10 = Highly sarcastic  
-
-                ### **Example Output:**
-                ```json
-                {
-                    "toxicity_level": 7,
-                    "sarcasm_level": 9
-                }
-
-            '''
+               '''
             }, {"role": "user",
-                "content": f"Analyze this message: '{text}'. Provide a JSON response with 'toxicity_level' (0-10) and 'sarcasm_level' (0-10)."}
+                "content": f"Analyze this message: '{text}'. Provide a JSON response with 'toxicity_level' (0-10) and 'sarcasm_level' (0-10) without explanation"}
             ],
             temperature=0.2,  # Lower temperature for more consistent results
             max_tokens=50
@@ -62,3 +48,7 @@ def predict_toxicity_and_sarcasm(text):
     except Exception as e:
         print(f"Error in predict_toxicity_and_sarcasm: {e}")
         return {"toxicity_level": 0, "sarcasm_level": 0}
+
+
+predict_toxicity_and_sarcasm('I hate you!')
+predict_toxicity_and_sarcasm('I hate you!/ s')

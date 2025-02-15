@@ -1,9 +1,13 @@
+import asyncio
 import discord
+import random
 import os
 
-from discord.ext import commands
+from challenges import *
+from datetime import datetime, timedelta
+from discord.ext import commands, tasks
 from load_dotenv import load_dotenv
-from toxicity_analysis2 import predict_toxicity_and_sarcasm
+from toxicity_analysis import predict_toxicity_and_sarcasm
 
 load_dotenv()
 
@@ -42,8 +46,6 @@ async def on_message(message: discord.Message):
         pass
 
     await bot.process_commands(message)
-
-#
 
 if TOKEN:
     bot.run(TOKEN)

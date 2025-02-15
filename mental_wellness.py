@@ -9,6 +9,7 @@ load_dotenv()
 client = OpenAI(api_key=os.environ.get("DEEPSEEK_API_KEY"),
                 base_url="https://api.deepseek.com")
 
+
 def predict_mental_wellness(text):
     try:
         response = client.chat.completions.create(
@@ -26,11 +27,9 @@ def predict_mental_wellness(text):
                 2) **Positive suggestion**:  
                     - Give some jokes or motivational quotes from past conversations.
                     - Provide specific encouragement based on their past messages or server activity
-                        - 0 = Completely literal  
-                        - 10 = Highly sarcastic  
                '''
             }, {"role": "user",
-                "content": f"Analyze this message: '{text}'. Provide a JSON response with 'model_level' (0-10) and 'suggestion' without explanation"}
+                "content": f"Analyze this message: '{text}'. Provide a JSON response with 'mood_level' (0-10) and 'suggestion' without explanation"}
             ],
             temperature=0.2,  # Lower temperature for more consistent results
             max_tokens=50
@@ -46,4 +45,4 @@ def predict_mental_wellness(text):
 
     except Exception as e:
         print(f"Error in predict_predict_mental_wellness: {e}")
-        return {"model_level": 0, "suggestion": ""}
+        return {"mood_level": 0, "suggestion": ""}
