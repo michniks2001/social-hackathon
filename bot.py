@@ -3,6 +3,7 @@ import os
 
 from discord.ext import commands
 from load_dotenv import load_dotenv
+from sentiment_analyzer import sentiment_analyzer
 
 load_dotenv()
 
@@ -31,8 +32,13 @@ async def on_message(message: discord.Message):
     if message.author == bot.user:
         return
 
-    if "hello" in message.content.lower():
-        await message.channel.send(f'Hello, {message.author.mention}!')
+    analysis = sentiment_analyzer(message.content)
+
+    output = analysis[0]['label']
+
+    if output == "NEGATIVE":
+        await message.delete()
+        await message.channel.send("No Bullying")
 
     await bot.process_commands(message)
 
