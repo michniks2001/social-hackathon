@@ -30,7 +30,7 @@ def predict_mental_wellness(text):
                         - 10 = Highly sarcastic  
                '''
             }, {"role": "user",
-                "content": f"Analyze this message: '{text}'. Provide a JSON response with 'model_level' (0-10) and 'suggestion' without explanation and not more "}
+                "content": f"Analyze this message: '{text}'. Provide a JSON response with 'model_level' (0-10) and 'suggestion' without explanation"}
             ],
             temperature=0.2,  # Lower temperature for more consistent results
             max_tokens=50
@@ -45,6 +45,5 @@ def predict_mental_wellness(text):
         return result
 
     except Exception as e:
-        print(f"Error in predict_mepredict_mental_wellness: {e}")
+        print(f"Error in predict_predict_mental_wellness: {e}")
         return {"model_level": 0, "suggestion": ""}
-
