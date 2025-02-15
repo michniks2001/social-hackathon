@@ -3,7 +3,7 @@ import os
 
 from discord.ext import commands
 from load_dotenv import load_dotenv
-from sentiment_analyzer import sentiment_analyzer
+from toxicity_analysis import predict_toxicity_and_sarcasm
 
 load_dotenv()
 
@@ -32,13 +32,14 @@ async def on_message(message: discord.Message):
     if message.author == bot.user:
         return
 
-    analysis = sentiment_analyzer(message.content)
+    toxicity_levels = predict_toxicity_and_sarcasm(message)
 
-    output = analysis[0]['label']
-
-    if output == "NEGATIVE":
-        await message.delete()
-        await message.channel.send("No Bullying")
+    if toxicity_levels['toxicity_level'] >= 8:
+        if toxicity_levels['sarcasm_level'] < 3:
+            await message.delete()
+            await message.channel.send('Watch your mouth!')
+    else:
+        pass
 
     await bot.process_commands(message)
 
